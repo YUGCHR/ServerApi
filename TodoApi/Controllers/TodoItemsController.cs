@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +11,7 @@ namespace TodoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors(origins: "http://localhost:3000/read", headers: "*", methods: "*")]
+    
     public class TodoItemsController : ControllerBase
     {
         private readonly TodoContext _context;
@@ -26,7 +25,7 @@ namespace TodoApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
         {
-            return await _context.TodoItems.ToListAsync();
+            return await _context.TodoItems.OrderBy(i => i.Id).ToListAsync();
         }
 
         // GET: api/TodoItems/5
