@@ -23,13 +23,22 @@ namespace TodoApi.Controllers
 
         // GET: api/TodoItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
+        public async Task<  ActionResult<     IEnumerable<TodoItem>      >> GetTodoItems()
         {
             return await _context.TodoItems.OrderBy(i => i.Id).ToListAsync();
         }
 
+        // GET: api/Count
+        [HttpGet("count")]
+        public async Task<ActionResult<TotalCount>> GetTotalCount()
+        {
+            return new TotalCount(_context.TodoItems.OrderBy(i => i.Id).Count());
+
+            //return new TotalCount { sentencesCount = 5 };
+        }
+
         // GET: api/TodoItems/5
-        [HttpGet("{id}")]
+        [HttpGet("item/{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
