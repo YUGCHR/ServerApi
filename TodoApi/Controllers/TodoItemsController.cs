@@ -87,13 +87,17 @@ namespace TodoApi.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
+        public async Task<ActionResult<TodoItem>> PostTodoItem([FromBody]TodoItem[] todoItems)
         {
-            _context.TodoItems.Add(todoItem);
+            _context.TodoItems.AddRange(todoItems);
             await _context.SaveChangesAsync();
 
+            // не знаю, нафиг это надо, мы в проекте везде возвращаем 
+            // return Ok();
             //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
-            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
+            // return CreatedAtAction(nameof(GetTodoItem), new { ids = todoItems.Select(i => i.Id) }, todoItems);
+
+            return Ok(new { ids = todoItems.Select(i => i.Id), totalCount = new TotalCount(_context.TodoItems.Count()) });
         }
 
         // DELETE: api/TodoItems/5
