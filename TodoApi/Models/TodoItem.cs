@@ -9,7 +9,7 @@ namespace TodoApi.Models
     {
         public long Id { get; set; }
 
-        public int languageId { get; set; }
+        public int LanguageId { get; set; }
 
         public string sentenceText { get; set; }        
     }

@@ -21,6 +21,24 @@ namespace TodoApi.Controllers
             _context = context;
         }
 
+        // GET: api/Count/
+        // api/count/5?param=2
+        [HttpGet("count")]
+        public async Task<ActionResult<TotalCount>> GetTotalCount()
+        {
+            return new TotalCount(_context.TodoItems.Count());
+            //return new TotalCount { sentencesCount = 5 };
+        }
+
+        // GET: api/Count/languageId
+        // api/count/5?param=2
+        [HttpGet("count/{languageId}")]
+        public async Task<ActionResult<TotalCount>> GetTotalCount(int languageId, [FromQuery] int param)
+        {
+            return new TotalCount(_context.TodoItems.Where(i => i.LanguageId == languageId).Count());
+            //return new TotalCount { sentencesCount = 5 };
+        }
+
         // GET: api/TodoItems
         [HttpGet]
         public async Task<  ActionResult<     IEnumerable<TodoItem>      >> GetTodoItems()
@@ -28,20 +46,11 @@ namespace TodoApi.Controllers
             return await _context.TodoItems.OrderBy(i => i.Id).ToListAsync();
         }
 
-        // GET: api/Count
-        [HttpGet("count")]
-        public async Task<ActionResult<TotalCount>> GetTotalCount()
+        // GET: api/TodoItems/languageId
+        [HttpGet("item/{languageId}")]
+        public async Task<ActionResult<TodoItem>> GetTodoItem(int languageId)
         {
-            return new TotalCount(_context.TodoItems.OrderBy(i => i.Id).Count());
-
-            //return new TotalCount { sentencesCount = 5 };
-        }
-
-        // GET: api/TodoItems/5
-        [HttpGet("item/{id}")]
-        public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
-        {
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var todoItem = await _context.TodoItems.FindAsync(languageId);
 
             if (todoItem == null)
             {
