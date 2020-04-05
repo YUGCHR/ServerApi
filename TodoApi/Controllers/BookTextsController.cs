@@ -12,11 +12,11 @@ namespace TodoApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     
-    public class TodoItemsController : ControllerBase
+    public class BookTextsController : ControllerBase
     {
-        private readonly TodoContext _context;
+        private readonly BookContext _context;
 
-        public TodoItemsController(TodoContext context)
+        public BookTextsController(BookContext context)
         {
             _context = context;
         }
@@ -26,7 +26,7 @@ namespace TodoApi.Controllers
         [HttpGet("count")]
         public async Task<ActionResult<TotalCount>> GetTotalCount()
         {
-            return new TotalCount(_context.TodoItems.Count());
+            return new TotalCount(_context.BookTexts.Count());
             //return new TotalCount { sentencesCount = 5 };
         }
 
@@ -35,36 +35,36 @@ namespace TodoApi.Controllers
         [HttpGet("count/{languageId}")]
         public async Task<ActionResult<TotalCount>> GetTotalCount(int languageId, [FromQuery] int param)
         {
-            return new TotalCount(_context.TodoItems.Where(i => i.LanguageId == languageId).Count());
+            return new TotalCount(_context.BookTexts.Where(i => i.LanguageId == languageId).Count());
             //return new TotalCount { sentencesCount = 5 };
         }
 
-        // GET: api/TodoItems
+        // GET: api/BookTexts
         [HttpGet]
-        public async Task<  ActionResult<     IEnumerable<TodoItem>      >> GetTodoItems()
+        public async Task<  ActionResult<     IEnumerable<BookText>      >> GetBookTexts()
         {
-            return await _context.TodoItems.OrderBy(i => i.Id).ToListAsync();
+            return await _context.BookTexts.OrderBy(i => i.Id).ToListAsync();
         }
 
-        // GET: api/TodoItems/languageId
-        [HttpGet("item/{languageId}")]
-        public async Task<ActionResult<TodoItem>> GetTodoItem(int languageId)
+        // GET: api/BookTexts/BookText/languageId
+        [HttpGet("BookText/{languageId}")]
+        public async Task<ActionResult<IEnumerable<BookText>>> GetBookText(int languageId)
         {
-            var todoItem = await _context.TodoItems.FindAsync(languageId);
+            var bookText = _context.BookTexts.Where(i => i.LanguageId == languageId).ToList();
 
-            if (todoItem == null)
+            if (bookText == null)
             {
                 return NotFound();
             }
 
-            return todoItem;
+            return bookText;
         }
 
-        // PUT: api/TodoItems/5
+        // PUT: api/BookTexts/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(long id, TodoItem todoItem)
+        public async Task<IActionResult> PutTodoItem(long id, BookText todoItem)
         {
             if (id != todoItem.Id)
             {
@@ -92,13 +92,13 @@ namespace TodoApi.Controllers
             return NoContent();
         }
 
-        // POST: api/TodoItems
+        // POST: api/BookTexts
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem([FromBody]TodoItem[] todoItems)
+        public async Task<ActionResult<BookText>> PostTodoItem([FromBody]BookText[] todoItems)
         {
-            _context.TodoItems.AddRange(todoItems);
+            _context.BookTexts.AddRange(todoItems);
             await _context.SaveChangesAsync();
 
             // не знаю, нафиг это надо, мы в проекте везде возвращаем 
@@ -106,20 +106,20 @@ namespace TodoApi.Controllers
             //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
             // return CreatedAtAction(nameof(GetTodoItem), new { ids = todoItems.Select(i => i.Id) }, todoItems);
 
-            return Ok(new { ids = todoItems.Select(i => i.Id), totalCount = new TotalCount(_context.TodoItems.Count()) });
+            return Ok(new { ids = todoItems.Select(i => i.Id), totalCount = new TotalCount(_context.BookTexts.Count()) });
         }
 
-        // DELETE: api/TodoItems/5
+        // DELETE: api/BookTexts/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TodoItem>> DeleteTodoItem(long id)
+        public async Task<ActionResult<BookText>> DeleteTodoItem(long id)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var todoItem = await _context.BookTexts.FindAsync(id);
             if (todoItem == null)
             {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(todoItem);
+            _context.BookTexts.Remove(todoItem);
             await _context.SaveChangesAsync();
 
             return todoItem;
@@ -127,7 +127,7 @@ namespace TodoApi.Controllers
 
         private bool TodoItemExists(long id)
         {
-            return _context.TodoItems.Any(e => e.Id == id);
+            return _context.BookTexts.Any(e => e.Id == id);
         }
     }
 }
