@@ -29,6 +29,7 @@ namespace TodoApi
         {
             services.AddDbContext<BookContext>(opt =>
                opt.UseInMemoryDatabase("TodoList"));
+            services.AddSingleton<INumberGen, NumberGen>();
             services.AddControllers();
         }
 

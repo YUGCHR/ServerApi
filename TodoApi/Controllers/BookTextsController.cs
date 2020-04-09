@@ -15,14 +15,15 @@ namespace TodoApi.Controllers
     public class BookTextsController : ControllerBase
     {
         private readonly BookContext _context;
+        private readonly INumberGen numberGen;
 
-        public BookTextsController(BookContext context)
+        public BookTextsController(BookContext context, INumberGen numberGen)
         {
             _context = context;
+            this.numberGen = numberGen;
         }
 
-        // GET: api/Count/
-        // api/count/5?param=2
+        // GET: api/Count/        
         [HttpGet("count")]
         public async Task<ActionResult<TotalCount>> GetTotalCount()
         {
@@ -96,9 +97,9 @@ namespace TodoApi.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<BookText>> PostTodoItem([FromBody]BookText[] todoItems)
+        public async Task<ActionResult<BookText>> PostTodoItem([FromBody]BookTextRequest textWrapper)
         {
-            _context.BookTexts.AddRange(todoItems);
+            _context.BookTexts.AddRange(textWrapper.Text);
             await _context.SaveChangesAsync();
 
             // не знаю, нафиг это надо, мы в проекте везде возвращаем 
@@ -106,7 +107,7 @@ namespace TodoApi.Controllers
             //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
             // return CreatedAtAction(nameof(GetTodoItem), new { ids = todoItems.Select(i => i.Id) }, todoItems);
 
-            return Ok(new { ids = todoItems.Select(i => i.Id), totalCount = new TotalCount(_context.BookTexts.Count()) });
+            return Ok(new { ids = textWrapper.Text.Select(i => i.Id), totalCount = new TotalCount(_context.BookTexts.Where(i => i.LanguageId == textWrapper.LanguageId).Count()) });
         }
 
         // DELETE: api/BookTexts/5
