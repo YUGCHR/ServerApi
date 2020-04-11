@@ -42,16 +42,16 @@ namespace TodoApi.Controllers
 
         // GET: api/BookTexts
         [HttpGet]
-        public async Task<  ActionResult<     IEnumerable<BookText>      >> GetBookTexts()
+        public async Task<  ActionResult<     IEnumerable<TextSentence>      >> GetBookTexts()
         {
             return await _context.BookTexts.OrderBy(i => i.Id).ToListAsync();
         }
 
         // GET: api/BookTexts/BookText/languageId
         [HttpGet("BookText/{languageId}")]
-        public async Task<ActionResult<IEnumerable<BookText>>> GetBookText(int languageId)
+        public async Task<ActionResult<BookText>> GetBookText(int languageId)
         {
-            var bookText = _context.BookTexts.Where(i => i.LanguageId == languageId).ToList();
+            var bookText = new BookText { Sentences = _context.BookTexts.Where(i => i.LanguageId == languageId).ToList() };
 
             if (bookText == null)
             {
@@ -65,7 +65,7 @@ namespace TodoApi.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(long id, BookText todoItem)
+        public async Task<IActionResult> PutTodoItem(long id, TextSentence todoItem)
         {
             if (id != todoItem.Id)
             {
@@ -97,7 +97,7 @@ namespace TodoApi.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<BookText>> PostTodoItem([FromBody]BookTextRequest textWrapper)
+        public async Task<ActionResult<TextSentence>> PostTodoItem([FromBody]BookTextRequest textWrapper)
         {
             _context.BookTexts.AddRange(textWrapper.Text);
             await _context.SaveChangesAsync();
@@ -112,7 +112,7 @@ namespace TodoApi.Controllers
 
         // DELETE: api/BookTexts/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<BookText>> DeleteTodoItem(long id)
+        public async Task<ActionResult<TextSentence>> DeleteTodoItem(long id)
         {
             var todoItem = await _context.BookTexts.FindAsync(id);
             if (todoItem == null)

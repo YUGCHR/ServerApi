@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using TodoApi.Models;
 
 namespace TodoApi.Models
 {
     public class BookText
     {
-        public long Id { get; set; }
-
-        public int LanguageId { get; set; }
-
-        public string sentenceText { get; set; }        
+        public List<TextSentence> Sentences { get; set; }
     }
 }
-

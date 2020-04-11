@@ -13,7 +13,7 @@ namespace TodoApi.Models
         {
         }
 
-        public DbSet<BookText> BookTexts { get; set; }
+        public DbSet<TextSentence> BookTexts { get; set; }
         
     }
 }
