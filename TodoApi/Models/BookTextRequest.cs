@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using TodoApi.Models;
+using BooksTextsSplit.Models;
 
-namespace TodoApi.Models
+namespace BooksTextsSplit.Models
 {
     public class BookTextRequest
     {

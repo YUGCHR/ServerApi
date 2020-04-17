@@ -11,9 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using TodoApi.Models;
+using BooksTextsSplit.Models;
+using Microsoft.Net.Http.Headers;
 
-namespace TodoApi
+namespace BooksTextsSplit
 {
     public class Startup
     {
@@ -35,7 +36,9 @@ namespace TodoApi
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
+        {            
+            string ApiHeader = "6dd"; //HeaderNames.ContentType
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -49,11 +52,14 @@ namespace TodoApi
 
             app.UseCors(builder =>
             {
-                builder.AllowAnyOrigin()
-                       .AllowAnyHeader()
-                       .AllowAnyMethod();
+                builder.WithOrigins("http://localhost:3000")
+                //AllowAnyOrigin()
+                       //.WithHeaders("KEY:", ApiHeader)
+                       .AllowAnyHeader()  
+                       .AllowAnyMethod()
+                       .AllowCredentials();
             });
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
