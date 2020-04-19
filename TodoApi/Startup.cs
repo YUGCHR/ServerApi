@@ -37,7 +37,7 @@ namespace BooksTextsSplit
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {            
-            string ApiHeader = "6dd"; //HeaderNames.ContentType
+            string ApiHeader = "6dd517b6-826d-4942-ab0a-022445b74fcd"; //HeaderNames.ContentType
 
             if (env.IsDevelopment())
             {
@@ -54,8 +54,9 @@ namespace BooksTextsSplit
             {
                 builder.WithOrigins("http://localhost:3000")
                 //AllowAnyOrigin()
-                       //.WithHeaders("KEY:", ApiHeader)
-                       .AllowAnyHeader()  
+                       //.WithHeaders("api-key", ApiHeader)
+                       .WithHeaders("api-key", HeaderNames.ContentType)
+                       //.AllowAnyHeader()  
                        .AllowAnyMethod()
                        .AllowCredentials();
             });
